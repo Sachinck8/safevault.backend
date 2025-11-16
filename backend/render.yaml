@@ -3,8 +3,10 @@ services:
     name: safevault-backend
     env: docker
     plan: free
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: backend/Dockerfile   # <-- points to your Dockerfile
     autoDeploy: true
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar backend/target/backend-0.0.1-SNAPSHOT.jar
     envVars:
       - key: SPRING_DATASOURCE_URL
         sync: false
