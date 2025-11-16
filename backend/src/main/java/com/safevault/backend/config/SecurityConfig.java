@@ -14,15 +14,24 @@ import com.safevault.backend.service.CustomUserDetails;
 @EnableWebSecurity
 public class SecurityConfig {
     private final CustomUserDetails customUserDetails;
+    private final OAuth2SuccessHandler successHandler;
 
-    public SecurityConfig(CustomUserDetails customUserDetails){
+    public SecurityConfig(CustomUserDetails customUserDetails, OAuth2SuccessHandler successHandler){
         this.customUserDetails=customUserDetails;
+        this.successHandler=successHandler;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(csrf -> csrf.disable())
-                 .authorizeHttpRequests(request -> request.requestMatchers("/register", "/login").permitAll().anyRequest().authenticated())
+                 .authorizeHttpRequests(request -> request.requestMatchers(
+                "/register",
+                "/login"
+        ).permitAll().anyRequest().authenticated())
+        .oauth2Login(oauth -> oauth
+                .loginPage("/register")
+                .successHandler(successHandler)
+            )
                  .formLogin(form -> form.loginProcessingUrl("/login").defaultSuccessUrl("/welcome", true).permitAll())
                  .logout(logout -> logout.logoutSuccessUrl("/login").permitAll()).userDetailsService(customUserDetails);
                  return http.build();
