@@ -30,7 +30,7 @@ public class SecurityConfig {
         ).permitAll().anyRequest().authenticated())
         .oauth2Login(oauth -> oauth
                 .loginPage("/register")
-                .successHandler(successHandler)
+                .defaultSuccessUrl("/home", true)
             )
                  .formLogin(form -> form.loginProcessingUrl("/login").defaultSuccessUrl("/welcome", true).permitAll())
                  .logout(logout -> logout.logoutSuccessUrl("/login").permitAll()).userDetailsService(customUserDetails);
