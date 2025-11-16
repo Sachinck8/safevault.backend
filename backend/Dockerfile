@@ -1,21 +1,13 @@
-# ---------- Build Stage ----------
+# Build stage
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn -DskipTests clean package
 
-COPY pom.xml .
-COPY src ./src
-
-RUN mvn clean package -DskipTests
-
-# ---------- Run Stage ----------
+# Run stage
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-
 COPY --from=build /app/target/*.jar app.jar
-
-# Render will assign PORT dynamically
-ENV PORT=8080
 EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
-# Spring Boot uses environment variables IF YOU SET THEM
-ENTRYPOINT ["java", "-jar", "-Dserver.port=8080", "app.jar"]
