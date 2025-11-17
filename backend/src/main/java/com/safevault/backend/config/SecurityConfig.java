@@ -29,7 +29,7 @@ public class SecurityConfig {
                 "/login"
         ).permitAll().anyRequest().authenticated())
         .oauth2Login(oauth -> oauth
-                .loginPage("/login")
+                .loginPage("/register")
                 .defaultSuccessUrl("/home", true)
             )
                  .formLogin(form -> form.loginProcessingUrl("/login").defaultSuccessUrl("/welcome", true).permitAll())
