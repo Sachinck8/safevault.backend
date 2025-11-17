@@ -13,10 +13,15 @@
         <button type="submit"> Register</button>
     </form>
 
+     <hr>
+    <a th:href="@{/oauth2/authorization/google}">
+        <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" alt="Sign in with Google">
+    </a>
     <hr>
-    <h3>Or Sign Up With Google</h3>
-<a href="/oauth2/authorization/google">
-    <button>Sign up with Google</button>
+
+    <a th:href="@{/oauth2/authorization/github}" class="github-btn">
+    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo">
+    Sign in with GitHub
 </a>
 </body>
 </html>
