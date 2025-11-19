@@ -23,22 +23,25 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, 
-                                        HttpServletResponse response, 
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response,
                                         Authentication auth) throws java.io.IOException {
-        
+
         DefaultOAuth2User oauthUser = (DefaultOAuth2User) auth.getPrincipal();
         String email = oauthUser.getAttribute("email");
 
-        User existing = userRepository.findByUsername(email);
-        if (existing == null) {
-            User user = new User();
-            user.setUsername(email);
-            user.setPassword("GOOGLE_USER"); // not used
-            user.setRole("USER");
-            userRepository.save(user);
+        
+        User existingUser = userRepository.findByUsername(email).orElse(null);
+
+        if (existingUser == null) {
+            User newUser = new User();
+            newUser.setUsername(email);
+            newUser.setPassword("GOOGLE_USER"); 
+            newUser.setRole("USER");
+            userRepository.save(newUser);
         }
 
         response.sendRedirect("/welcome");
     }
 }
+
