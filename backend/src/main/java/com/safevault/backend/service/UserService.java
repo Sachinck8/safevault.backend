@@ -9,14 +9,19 @@ import com.safevault.backend.repository.UserRepository;
 
 @Service
 public class UserService {
+    @Autowired
 
     private final UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     public UserService(UserRepository userRepository){
         this.userRepository=userRepository;
+
     }
      public void registerUser(String username, String password){
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new RuntimeException("Email already registered");
+        }
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));

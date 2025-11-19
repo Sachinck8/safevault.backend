@@ -27,10 +27,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email is required")
     @Column(unique = true, nullable = false)
     private String username;
     
-    @Column(nullable = false)
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
     private String role;
 
